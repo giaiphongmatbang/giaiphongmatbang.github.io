@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phần mềm GPMB – Giải phóng mặt bằng</title>
+<meta name="description" content="Phần mềm GPMB hỗ trợ lập hồ sơ bồi thường, hỗ trợ, tái định cư: nhập thông tin thửa đất, kiểm đếm, áp giá, lập phương án và tổng hợp kinh phí giải phóng mặt bằng.">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  :root {
+    --xanh: #0b4f8a;
+    --xanh-nhat: #e8f1f9;
+    --la: #2e7d32;
+    --la-nhat: #edf7ee;
+    --nau: #2b1a12;
+    --chu: #1f2a33;
+    --chu-nhat: #5b6770;
+    --vien: #dfe6ec;
+    --nen: #ffffff;
+    --nen-phu: #f6f8fa;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; color: var(--chu); background: var(--nen); line-height: 1.6; font-size: 16px; }
+  a { color: var(--xanh); }
+  .khung { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  /* thanh trên */
+  .top { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.96); border-bottom: 1px solid var(--vien); }
+  .top .khung { display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 12px; }
+  .ten { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--chu); font-weight: 700; font-size: 18px; white-space: nowrap; }
+  .ten img { width: 34px; height: 34px; }
+  .top nav { display: flex; gap: 22px; }
+  .top nav a { text-decoration: none; color: var(--chu); font-size: 15px; }
+  .top nav a:hover { color: var(--xanh); }
+
+  /* phần đầu */
+  .dau { background: linear-gradient(180deg, var(--xanh-nhat), #fff); padding: 56px 0 48px; }
+  .dau .khung { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; }
+  .dau h1 { font-size: 40px; line-height: 1.2; margin: 0 0 14px; color: var(--xanh); }
+  .dau h1 span { color: var(--la); }
+  .dau p.lead { font-size: 18px; color: var(--chu-nhat); margin: 0 0 26px; }
+  .dau img { width: 100%; max-width: 340px; justify-self: center; border-radius: 18px; box-shadow: 0 6px 24px rgba(11,79,138,.12); }
+  .nut { display: inline-block; padding: 12px 22px; border-radius: 6px; font-weight: 600; text-decoration: none; margin: 0 10px 10px 0; }
+  .nut.chinh { background: var(--xanh); color: #fff; }
+  .nut.chinh:hover { background: #083c6a; }
+  .nut.phu { border: 1.5px solid var(--xanh); color: var(--xanh); background: #fff; }
+  .phien-ban { font-size: 14px; color: var(--chu-nhat); }
+
+  section { padding: 56px 0; }
+  section.xam { background: var(--nen-phu); }
+  h2 { font-size: 28px; margin: 0 0 8px; text-align: center; }
+  .mo-ta-muc { text-align: center; color: var(--chu-nhat); margin: 0 auto 34px; max-width: 680px; }
+
+  /* tính năng */
+  .luoi { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .the { background: #fff; border: 1px solid var(--vien); border-radius: 10px; padding: 22px; }
+  .the .so { display: inline-flex; width: 34px; height: 34px; border-radius: 50%; background: var(--la-nhat); color: var(--la); font-weight: 700; align-items: center; justify-content: center; margin-bottom: 8px; }
+  .the h3 { margin: 0 0 6px; font-size: 18px; }
+  .the p { margin: 0; color: var(--chu-nhat); font-size: 15px; }
+
+  /* quy trình */
+  .buoc { counter-reset: b; list-style: none; padding: 0; margin: 0 auto; max-width: 760px; }
+  .buoc li { counter-increment: b; position: relative; padding: 0 0 18px 52px; }
+  .buoc li::before { content: counter(b); position: absolute; left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; background: var(--xanh); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .buoc b { display: block; }
+  .buoc span { color: var(--chu-nhat); }
+
+  /* tải về */
+  .tai { text-align: center; }
+  .tai .yeu-cau { display: inline-block; text-align: left; background: #fff; border: 1px solid var(--vien); border-radius: 10px; padding: 16px 22px; margin-top: 18px; color: var(--chu-nhat); font-size: 15px; }
+  .tai .yeu-cau ul { margin: 6px 0 0; padding-left: 20px; }
+
+  /* liên hệ */
+  .lien-he { display: grid; grid-template-columns: repeat(2, minmax(0, 320px)); gap: 18px; justify-content: center; }
+  .lien-he .the { text-align: center; }
+  .lien-he .lon { font-size: 22px; font-weight: 700; color: var(--chu); text-decoration: none; }
+
+  footer { border-top: 1px solid var(--vien); padding: 22px 0; color: var(--chu-nhat); font-size: 14px; text-align: center; }
+
+  @media (max-width: 860px) {
+    .dau .khung { grid-template-columns: 1fr; }
+    .dau img { max-width: 240px; order: -1; }
+    .dau h1 { font-size: 30px; }
+    .luoi { grid-template-columns: 1fr 1fr; }
+    .top nav { display: none; }
+  }
+  @media (max-width: 560px) {
+    .luoi, .lien-he { grid-template-columns: 1fr; }
+    .khung { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="khung">
+    <a class="ten" href="#"><img src="favicon.png" alt="">Phần mềm GPMB</a>
+    <nav>
+      <a href="#tinh-nang">Tính năng</a>
+      <a href="#quy-trinh">Quy trình</a>
+      <a href="huong-dan.html">Hướng dẫn</a>
+      <a href="#tai-ve">Tải về</a>
+      <a href="#lien-he">Liên hệ</a>
+    </nav>
+  </div>
+</div>
+
+<div class="dau">
+  <div class="khung">
+    <div>
+      <h1>Phần mềm <span>Giải phóng mặt bằng</span></h1>
+      <p class="lead">Hỗ trợ lập hồ sơ bồi thường, hỗ trợ, tái định cư khi Nhà nước thu hồi đất: từ số liệu thửa đất, kiểm đếm, áp giá theo bộ đơn giá của tỉnh đến bảng tổng hợp kinh phí của dự án.</p>
+      <a class="nut chinh" href="#tai-ve">Tải phần mềm</a>
+      <a class="nut phu" href="huong-dan.html">Xem hướng dẫn</a>
+      <div class="phien-ban" id="phienBan">Dùng thử miễn phí 7 ngày</div>
+    </div>
+    <img src="logo.png" alt="Logo ĐMT - GPMB&amp;TĐC">
+  </div>
+</div>
+
+<section id="tinh-nang">
+  <div class="khung">
+    <h2>Tính năng chính</h2>
+    <p class="mo-ta-muc">Tập trung vào các công việc lặp đi lặp lại của cán bộ GPMB, giảm sai sót khi tính toán và lập văn bản.</p>
+    <div class="luoi">
+      <div class="the"><div class="so">1</div><h3>Nhập số liệu thửa đất</h3><p>Từ file Master, Excel gCadas, Excel tự do, TXT TMV.map (tự chuyển TCVN3, VNI sang Unicode). Kiểm lỗi CCCD, diện tích, loại đất.</p></div>
+      <div class="the"><div class="so">2</div><h3>Thông báo, danh sách thu hồi</h3><p>Xuất danh sách thu hồi, danh sách hộ (Excel) và thông báo thu hồi cho từng hộ theo phôi Word của đơn vị.</p></div>
+      <div class="the"><div class="so">3</div><h3>Biên bản kiểm đếm</h3><p>Chọn tài sản theo danh mục đơn giá, nhập khối lượng bằng biểu thức, mã điều chỉnh tăng giảm giá theo quyết định.</p></div>
+      <div class="the"><div class="so">4</div><h3>Áp giá bồi thường</h3><p>Theo bộ đơn giá của tỉnh cho đất ở, cây lâu năm, cây hằng năm, rừng sản xuất, đất giao khoán. Xuất, nhập bộ đơn giá bằng Excel.</p></div>
+      <div class="the"><div class="so">5</div><h3>Chế độ hỗ trợ</h3><p>Chuyển đổi nghề, ổn định đời sống, ổn định sản xuất, gia đình chính sách… theo hệ số và mức của từng tỉnh, xã.</p></div>
+      <div class="the"><div class="so">6</div><h3>Phê duyệt, tổng hợp kinh phí</h3><p>Khóa hồ sơ khi phê duyệt, giữ nguyên đơn giá đã duyệt. Tổng hợp và xuất kinh phí theo mẫu Excel.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="quy-trinh" class="xam">
+  <div class="khung">
+    <h2>Quy trình làm việc</h2>
+    <p class="mo-ta-muc">Toàn bộ số liệu của một dự án nằm trong một file, dễ sao lưu và chuyển máy.</p>
+    <ol class="buoc">
+      <li><b>Tạo dự án, chọn đơn vị hành chính</b><span>Khai báo tên dự án, quyết định phê duyệt, chủ đầu tư, Hội đồng bồi thường và chế độ hỗ trợ của xã.</span></li>
+      <li><b>Nhập và kiểm tra số liệu thửa đất</b><span>Nạp từ gCadas, TMV.map hoặc Excel; kiểm lỗi trước khi lập hồ sơ.</span></li>
+      <li><b>Xuất thông báo thu hồi</b><span>Mỗi hộ một văn bản, đánh số tự động.</span></li>
+      <li><b>Kiểm đếm và áp giá</b><span>Lập biên bản kiểm đếm, áp giá, xuất biên bản và phương án chi tiết của hộ.</span></li>
+      <li><b>Phê duyệt, tổng hợp kinh phí</b><span>Ghi quyết định phê duyệt, chuyển kinh phí và xuất bảng tổng hợp.</span></li>
+    </ol>
+  </div>
+</section>
+
+<section id="tai-ve">
+  <div class="khung tai">
+    <h2>Tải phần mềm</h2>
+    <p class="mo-ta-muc">Bản mới nhất luôn có tại trang tải về. Cài xong được dùng thử 7 ngày; liên hệ để nhận key bản quyền.</p>
+    <a class="nut chinh" id="nutTai" href="https://github.com/giaiphongmatbang/giaiphongmatbang.github.io/releases/latest">Tải bản mới nhất</a>
+    <a class="nut phu" href="huong-dan.html">Hướng dẫn sử dụng</a>
+    <br>
+    <div class="yeu-cau">
+      <b>Yêu cầu máy tính</b>
+      <ul>
+        <li>Windows 10 hoặc Windows 11 (64-bit)</li>
+        <li>Microsoft Office hoặc phần mềm mở được file Word, Excel để xem văn bản xuất ra</li>
+        <li>Kết nối Internet chỉ cần khi kiểm tra cập nhật</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="lien-he" class="xam">
+  <div class="khung">
+    <h2>Liên hệ</h2>
+    <p class="mo-ta-muc">Hỗ trợ cài đặt, cấp key bản quyền, góp ý tính năng.</p>
+    <div class="lien-he">
+      <div class="the"><p>Người phát triển</p><div class="lon">Leo</div></div>
+      <div class="the"><p>Điện thoại</p><a class="lon" href="tel:0941365123">0941 365 123</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="khung">© <span id="nam">2026</span> Phần mềm GPMB · Phát triển bởi Leo · ĐT 0941 365 123</div>
+</footer>
+
+<script>
+  // hiện phiên bản mới nhất và link tải theo version.json (cùng file phần mềm dùng để kiểm tra cập nhật)
+  document.getElementById('nam').textContent = new Date().getFullYear();
+  fetch('version.json?t=' + Date.now())
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (v) {
+      if (!v || !v.version) return;
+      document.getElementById('phienBan').textContent =
+        'Phiên bản mới nhất: ' + v.version + (v.ngay ? ' (' + v.ngay + ')' : '') + ' · Dùng thử miễn phí 7 ngày';
+      if (v.taiVe) document.getElementById('nutTai').href = v.taiVe;
+    })
+    .catch(function () {});
+</script>
+</body>
+</html>
