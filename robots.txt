@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://giaiphongmatbang.github.io/sitemap.xml
